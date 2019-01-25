@@ -1,6 +1,7 @@
 import db from '../lib/db'
 
 import Level from './level'
+import Password from '../lib/password';
 
 
 class User{
@@ -43,6 +44,36 @@ class User{
             username: this.username,
             name: this.name,
             picture: this.picture
+        }
+    }
+    async save(disableSafeMode = false){
+        try{
+            if(this.id == undefined){
+                await db('user').insert({
+                    level: this.level.id,
+                    username: this.username,
+                    password: new Password(this.password).value,
+                    nama: this.name,
+                    picture: this.picture || 'default.png'
+                })
+            }
+            else{
+                await db('user').update({
+                    level: this.level.id,
+                    username: this.username,
+                    nama: this.name,
+                    picture: this.picture || 'default.png'
+                }).where('id', this.id)
+                if(disableSafeMode){
+                    await db('user').update({
+                        password: new Password(this.password).value
+                    }).where('id', this.id)
+                }
+            }
+            return true
+        }
+        catch(e){
+            return false
         }
     }
 }
