@@ -34,11 +34,14 @@ server.route({
 })
 
 async function provision(){
+    console.log('Le Bistro Server')
+    console.log(`${chalk.bgGreen('PRV')}\t compiling css...`)
     css = await postcss([tailwindcss(process.cwd()+'/tailwind.js')]).process(css, {
         from: '../static/styles/tailwind.css',
         to: '../static/styles/main.css'
     })
     css = css.css
+    console.log(`${chalk.bgGreen('PRV')}\t registering plugins...`)
     await server.register({
         plugin: vision,
         options: {
@@ -54,7 +57,8 @@ async function provision(){
         plugin: inert
     })
     server.start()
-    console.log(`Server started on port ${chalk.bold.green(server.settings.port)}`)
+    console.log(`${chalk.bgGreen('PRV')}\t ${chalk.bold.green('OK')}`)
+    console.log(`${chalk.bgBlue('MSG')}\t Server started on port ${chalk.bold.green(server.settings.port)}`)
 }
 
 provision()
