@@ -5,7 +5,7 @@ class Level{
         this.id = data.id
         this.name = data.nama
     }
-    static async getById(id){
+    static async findById(id){
         let data = await db('level').select().where('id', id)
         return new Level(data[0])
     }

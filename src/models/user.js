@@ -22,7 +22,7 @@ class User{
             }
         })
     }
-    static async getById(id){
+    static async findById(id){
         try{
             let data = await db('user').select().where('id', id)
             let user = await new User(data[0])
@@ -33,7 +33,7 @@ class User{
             return new User()
         }
     }
-    static async getByUsername(username){
+    static async findByUsername(username){
         try{
             let data = await db('user').select().where('username', username)
             let user = await new User(data[0])
