@@ -5,35 +5,42 @@ import Password from '../lib/password';
 
 
 class User{
-    constructor(){
-        
-    }
-    async init(data){
-        this.id = data.id || undefined
-        this.level = await Level.getById(data.level)
-        this.username = data.username
-        this.password = data.password
-        this.name = data.nama
-        this.picture = data.picture
-        return this
+    constructor(data){
+        return new Promise(async (resolve, reject) => {
+            try{
+                this.id = data.id || undefined
+                this.level = await Level.getById(data.level)
+                this.username = data.username
+                this.password = data.password
+                this.name = data.nama
+                this.picture = data.picture
+                resolve(this)
+            }
+            catch(e){
+                console.log(e)
+                reject()
+            }
+        })
     }
     static async getById(id){
         try{
             let data = await db('user').select().where('id', id)
-            let user = await new User().init(data[0])
+            let user = await new User(data[0])
             return user
         }
         catch(e){
+            console.log(e)
             return new User()
         }
     }
     static async getByUsername(username){
         try{
             let data = await db('user').select().where('username', username)
-            let user = await new User().init(data[0])
+            let user = await new User(data[0])
             return user
         }
         catch(e){
+            console.log(e)
             return new User()
         }
     }
