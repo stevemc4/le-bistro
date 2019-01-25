@@ -63,7 +63,7 @@ async function install(){
         table.increments('id').primary()
         table.integer('orderId').notNullable().unsigned().references('id').inTable('order').onDelete('cascade').onUpdate('cascade')
         table.integer('masakan').nullable().unsigned().references('id').inTable('masakan').onDelete('set null').onUpdate('cascade')
-        table.string('keterangan').nullable()
+        table.integer('keterangan').notNullable()
         table.enum('status', [
             'Belum Siap',
             'Dimasak',
