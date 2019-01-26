@@ -1,0 +1,50 @@
+import db from '../lib/db'
+
+import User from './user'
+import Order from './order'
+
+class Transaction{
+    constructor(data){
+        return new Promise(async (resolve, reject) => {
+            this.id = data.id || undefined
+            this.user = await User.findById(data.userId)
+            this.order = await Order.findById(data.orderId)
+            this.date = data.tanggal
+            this.total = data.totalBayar
+            resolve(this)
+        })
+    }
+    static async findById(id){
+        let data = await db('transaksi').select().where('id', id)
+        return await new Transaction(data[0])
+    }
+    static async findByDateRange(start, end){
+        return 'NOT IMPLEMENTED'
+    }
+    async save(){
+        try{
+            if(this.id == undefined){
+                await db('transaksi').insert({
+                    userId: this.user.id,
+                    orderId: this.order.id,
+                    tanggal: this.date,
+                    totalBayar: this.total
+                })
+            }
+            else{
+                await db('transaksi').update({
+                    userId: this.user.id,
+                    orderId: this.order.id,
+                    tanggal: this.date,
+                    totalBayar: this.total
+                }).where('id', this.id)
+            }
+            return true
+        }
+        catch(e){
+            return false
+        }
+    }
+}
+
+export default Transaction
