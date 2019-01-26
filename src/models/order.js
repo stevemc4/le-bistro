@@ -1,6 +1,7 @@
 import db from '../lib/db'
 
 import User from './user'
+import OrderDetail from './orderDetail'
 
 class Order{
     constructor(data){
@@ -57,6 +58,9 @@ class Order{
         catch(e){
             return false
         }
+    }
+    async findOrderDetails(){
+        return await OrderDetail.findByOrder(this)
     }
 }
 
