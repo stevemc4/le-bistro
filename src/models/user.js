@@ -12,7 +12,7 @@ class User{
                 this.level = await Level.getById(data.level)
                 this.username = data.username
                 this.password = data.password
-                this.name = data.nama
+                this.name = data.name
                 this.picture = data.picture
                 resolve(this)
             }
@@ -24,7 +24,14 @@ class User{
     }
     static async findById(id){
         try{
-            let data = await db('user').select().where('id', id)
+            let data = await db('user').select([
+                'id',
+                'level',
+                'username',
+                'password',
+                'nama as name',
+                'picture'
+            ]).where('id', id)
             let user = await new User(data[0])
             return user
         }
@@ -35,7 +42,14 @@ class User{
     }
     static async findByUsername(username){
         try{
-            let data = await db('user').select().where('username', username)
+            let data = await db('user').select([
+                'id',
+                'level',
+                'username',
+                'password',
+                'nama as name',
+                'picture'
+            ]).where('username', username)
             let user = await new User(data[0])
             return user
         }

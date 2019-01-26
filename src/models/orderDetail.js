@@ -6,16 +6,29 @@ import Menu from './menu'
 class OrderDetail{
     constructor(data){
         return new Promise(async (resolve, reject) => {
-            this.id = data.id || undefined,
-            this.order = await Order.findById(data.orderId)
-            this.menu = await Menu.findById(data.masakan)
-            this.qty = data.keterangan
+            this.id = data.id || undefined
+            if((typeof data.order) == Order)
+                this.order = data.order
+            else
+                this.order = await Order.findById(data.order)
+            
+            if((typeof data.menu) == Menu)
+                this.menu = data.menu
+            else
+                this.menu = await Menu.findById(data.menu)
+            this.qty = data.qty
             this.status = data.status
             resolve(this)
         })
     }
     static findById(id){
-        let data = await db('detailOrder').select().where('id', id)
+        let data = await db('detailOrder').select([
+            'id',
+            'orderId as \'order\'',
+            'masakan as menu',
+            'keterangan as qty',
+            'status'
+        ]).where('id', id)
         return await new OrderDetail(data[0])
     }
 
@@ -25,7 +38,13 @@ class OrderDetail{
      */
     static async findByOrder(order){
         let temp = []
-        let data = await db('detailOrder').select()
+        let data = await db('detailOrder').select([
+            'id',
+            'orderId as \'order\'',
+            'masakan as menu',
+            'keterangan as qty',
+            'status'
+        ])
         .where('orderId', order.id)
         for(let item of data){
             temp.push(await new OrderDetail(item))

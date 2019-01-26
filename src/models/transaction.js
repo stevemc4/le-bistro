@@ -7,15 +7,28 @@ class Transaction{
     constructor(data){
         return new Promise(async (resolve, reject) => {
             this.id = data.id || undefined
-            this.user = await User.findById(data.userId)
-            this.order = await Order.findById(data.orderId)
-            this.date = data.tanggal
-            this.total = data.totalBayar
+            if((typeof data.user) == User )
+                this.user = data.user
+            else
+                this.user = await User.findById(data.user)
+
+            if((typeof data.order) == Order)
+                this.order = data.order
+            else
+                this.order = await Order.findById(data.orderId)
+            this.date = data.date
+            this.total = data.total
             resolve(this)
         })
     }
     static async findById(id){
-        let data = await db('transaksi').select().where('id', id)
+        let data = await db('transaksi').select([
+            'id',
+            'userId as user',
+            'orderId as \'order\'',
+            'tanggal as date',
+            'totalBayar as total'
+        ]).where('id', id)
         return await new Transaction(data[0])
     }
     static async findByDateRange(start, end){
