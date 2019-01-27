@@ -9,7 +9,7 @@ class User{
         return new Promise(async (resolve, reject) => {
             try{
                 this.id = data.id || undefined
-                this.level = await Level.getById(data.level)
+                this.level = await Level.findById(data.level)
                 this.username = data.username
                 this.password = data.password
                 this.name = data.name
