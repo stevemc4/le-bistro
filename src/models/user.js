@@ -58,6 +58,28 @@ class User{
             return new User()
         }
     }
+    static async findByLevel(level){
+        try{
+            let temp = []
+            let data = await db('user').select([
+                'id',
+                'level',
+                'username',
+                'password',
+                'nama as name',
+                'picture'
+            ]).where('level', level)
+            for(let item of data)
+            {
+                temp.push(await new User(item))
+            }
+            return temp
+        }
+        catch(e){
+            console.log(e)
+            return new User()
+        }
+    }
     toObject(){
         return {
             id: this.id,
