@@ -18,7 +18,21 @@ class Order{
             resolve(this)
         })
     }
-
+    static async fetch(limit=0, page=1){
+        let temp = []
+        let data = await db('order').select([
+            'id',
+            'userId as \'user\'',
+            'noMeja as tableNo',
+            'tanggal as date',
+            'keterangan as detail',
+            'status'
+        ])
+        for(let item of data){
+            temp.push(await new Order(item))
+        }
+        return temp
+    }
     static async findById(id){
         let data = await db('order').select([
             'id',

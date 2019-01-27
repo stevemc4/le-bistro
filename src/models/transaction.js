@@ -21,6 +21,20 @@ class Transaction{
             resolve(this)
         })
     }
+    static async fetch(limit=0, page=1){
+        let temp = []
+        let data = await db('transaksi').select([
+            'id',
+            'userId as user',
+            'orderId as \'order\'',
+            'tanggal as date',
+            'totalBayar as total'
+        ])
+        for(let item of data){
+            temp.push(await new Transaction(item))
+        }
+        return temp
+    }
     static async findById(id){
         let data = await db('transaksi').select([
             'id',

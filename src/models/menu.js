@@ -8,6 +8,20 @@ class Menu{
         this.status = data.status
         this.picture = data.picture
     }
+    static async fetch(limit=0, page=1){
+        let temp = []
+        let data = await db('masakan').select([
+            'id',
+            'nama as name',
+            'harga as price',
+            'status',
+            'picture'
+        ])
+        for(let item of data){
+            temp.push(new Menu(item))
+        }
+        return temp
+    }
     static async findById(id){
         let data = await db('masakan').select([
             'id',
