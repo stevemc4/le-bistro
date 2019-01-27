@@ -31,6 +31,7 @@
     "moment-timezone": "^0.5.23",
     "mysql2": "^1.6.4",
     "postcss": "^7.0.14",
+    "socket.io": "^2.2.0",
     "tailwindcss": "^0.7.4",
     "vision": "^5.4.4",
     "yar": "^9.1.0"
