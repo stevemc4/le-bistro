@@ -25,7 +25,9 @@ server.route({
     path: '/',
     method: 'GET',
     handler(req, h){
-        return h.view('index')
+        return h.view('index', {
+            page: 'overview'
+        })
     }
 })
 
