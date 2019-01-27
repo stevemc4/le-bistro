@@ -7,7 +7,11 @@ import fs from 'fs'
 import hapi from 'hapi'
 import vision from 'vision'
 import inert from 'inert'
+import yar from 'yar'
 import ejs from 'ejs'
+
+import routes from './routes/routes'
+import { ServerResponse } from 'http';
 
 dotenv.config()
 var css = fs.readFileSync(process.cwd() + '/static/styles/tailwind.css').toString()
@@ -33,6 +37,8 @@ server.route({
     }
 })
 
+server.route(routes)
+
 async function provision(){
     console.log('Le Bistro Server')
     console.log(`${chalk.bgGreen('PRV')}\t compiling css...`)
@@ -55,6 +61,16 @@ async function provision(){
     })
     await server.register({
         plugin: inert
+    })
+    await server.register({
+        plugin: yar,
+        options:{
+            storeBlank: false,
+            cookieOptions:{
+                password: 'NTCfzeGC7XtpBpDiWvSbyy2NUt0gEDji',
+                isSecure: false
+            }
+        }
     })
     server.start()
     console.log(`${chalk.bgGreen('PRV')}\t ${chalk.bold.green('OK')}`)
