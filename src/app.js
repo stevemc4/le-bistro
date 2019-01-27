@@ -25,7 +25,17 @@ server.route({
     path: '/',
     method: 'GET',
     handler(req, h){
-        return h.view('index')
+        return h.view('index', {
+            page: 'overview'
+        })
+    }
+})
+
+server.route({
+    path: '/static/{path*}',
+    method: 'GET',
+    handler(req, h){
+        return h.file(process.cwd() + '/static/' + req.params.path)
     }
 })
 
