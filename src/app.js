@@ -30,6 +30,14 @@ server.route({
 })
 
 server.route({
+    path: '/static/{path*}',
+    method: 'GET',
+    handler(req, h){
+        return h.file(process.cwd() + '/static/' + req.params.path)
+    }
+})
+
+server.route({
     path: '/static/styles/main.css',
     method: 'GET',
     handler(req, h){
