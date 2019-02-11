@@ -16,6 +16,18 @@ let views = [
             else
                 return h.redirect('/')
         }
+    },
+    {
+        path: '/',
+        method: 'GET',
+        async handler(req, h){
+            if(req.yar.get('user') == undefined)
+                return h.view('pages/login')
+            else
+                return h.view('index', {
+                    page: 'overview'
+                })
+        }
     }
 ]
 
