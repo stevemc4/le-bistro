@@ -22,16 +22,6 @@ const server = new hapi.Server({
 })
 
 server.route({
-    path: '/',
-    method: 'GET',
-    handler(req, h){
-        return h.view('index', {
-            page: 'overview'
-        })
-    }
-})
-
-server.route({
     path: '/static/{path*}',
     method: 'GET',
     handler(req, h){
